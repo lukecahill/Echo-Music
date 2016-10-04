@@ -5,6 +5,23 @@ html
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
+    nav.navbar.navbar-default
+      div.navbar-header
+        button.navbar-toggle.collapsed(data-toggle="collapse")(type="button")
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand Brand
+
+      div.collapse.navbar-collapse
+        ul.nav.navbar-nav
+          li.active
+            a(href="#") Link
+          li
+            a(href="#") Another link
+    div.container-fluid
+
     block content
 
 include footer
