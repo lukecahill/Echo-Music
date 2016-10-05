@@ -5,23 +5,29 @@ html
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    nav.navbar.navbar-default
+    nav.navbar-inverse.navbar-default
       div.navbar-header
         button.navbar-toggle.collapsed(data-toggle="collapse")(type="button")
           span.sr-only Toggle navigation
           span.icon-bar
           span.icon-bar
           span.icon-bar
-        a.navbar-brand Brand
-
+        a.navbar-brand(href="/") Brand
+      
       div.collapse.navbar-collapse
         ul.nav.navbar-nav
           li.active
-            a(href="#") Link
+            a(href="/") Home
           li
-            a(href="#") Another link
-    div.container-fluid
+            a(href="/books") Books
+          li
+            a(href="/authors") Authors
+          li
+            a(href="/about") About
 
-    block content
+    div.col-md-1
+    div.container-fluid.col-md-10
+      block content
+    div.col-md-1
 
 include footer
