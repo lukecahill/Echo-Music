@@ -1,0 +1,7 @@
+extends layout 
+
+block content
+    h3 Authors
+    ul
+        each author, i in authorlist
+            li #{author.Author} has the book #{author.Title}
