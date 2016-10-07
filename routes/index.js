@@ -29,22 +29,40 @@ router.get('/books', function(req, res) {
 
 router.get('/authors', function(req, res) {
   var collection = database.collection('books');
-  var items = collection.find();
-  items.each(function(err, i) {
-    if(i == null) {
-      database.close();
-      return;
+  var items = collection.find().toArray(function(err, result) {
+    if(err) {
+      res.send(err);
+    } else if(result.length) {
+      console.log(result);
+      res.render('authorlist', {
+        'authorlist' : result
+      });
+    } else {
+      res.send('No items found!');
     }
-    console.log(i.Author)
   });
-  
-  database.close();
-  res.render('authors');
-}); 
+});
 
-router.post('/authors', function(req, res) {
+router.get('/newAuthor', function(req, res) {
+  res.render('newAuthor', {
+    title: 'New Author'
+  });
+});
+
+router.post('/addAuthor', function(req, res) {
   console.log(req);
-  console.log(res);
+  var collection = database.collection('books');
+  var author = {
+    'Author' : req.body.author_name,
+    'Title' : req.body.book_name
+  };
+  collection.insert(author, function(err, result) {
+    if(err) {
+      console.log(err);
+    } else {
+      res.redirect('authors');
+    }
+  });
 });
 
 module.exports = router;
