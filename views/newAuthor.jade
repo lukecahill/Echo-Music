@@ -1,0 +1,13 @@
+extends layout
+
+block content
+    h3= title
+
+    form#add-author-form(method="post", action="/addAuthor")
+        span Name
+        input#author-name.form-control(type="text", name="author_name", "placeholder"= "Randall Munroe")
+
+        span Book Name
+        input#book-name.form-control(type="text", name="book_name", placeholder="What If?")
+
+        button#add-author.btn.btn-primary(type="submit") Add
