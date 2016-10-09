@@ -1,9 +1,15 @@
 extends layout 
 
 block content
-    h3 Authors
-    ul
-        each author, i in authorlist
-            li #{author.Author} has the book #{author.Title}
+    h2 Authors
 
-    a(href="/newAuthor") Add a new author
+    form(action="/newAuthor").pull-right
+        button.btn.btn-primary
+            span.glyphicon.glyphicon-plus 
+            |   Add a new Author
+
+    h3 The authors that are currently in our catalog
+    table.table.table-striped.table-hover
+        each author, i in authorlist
+            tr
+                td #{author.Author}
