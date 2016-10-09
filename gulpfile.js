@@ -7,29 +7,29 @@ var sass = require('gulp-sass');
 var livereload = require('gulp-livereload');
 
 gulp.task('minify', function() {
-	gulp.src('./js/*.js')
+	gulp.src('./public/javascripts/*.js')
     .pipe(uglify())
 	.pipe(rename({
 		suffix: '.min'
 	}))
-    .pipe(gulp.dest('./javascrips/build/'))
+    .pipe(gulp.dest('./public/javascrips/build/'))
     .pipe(livereload());
 });
 
 gulp.task('jsLint', function () {
-	gulp.src('./javascripts/*.js')
+	gulp.src('./public/javascripts/*.js')
 	.pipe(jshint())
 	.pipe(jshint.reporter());
 });
 
 gulp.task('sass', function() {
-	gulp.src('./stylesheets/*.scss')
+	gulp.src('./public/stylesheets/*.scss')
 	.pipe(sass())
-	.pipe(gulp.dest('./stylesheets/'))
+	.pipe(gulp.dest('./public/stylesheets/'))
     .pipe(livereload());
 });
 
 gulp.task('watch-js', function() {
 	livereload.listen();
-	gulp.watch(['./javascripts/*.js', './stylesheets/*.scss'], ['minify', 'jsLint', 'sass']);
+	gulp.watch(['./public/javascripts/*.js', './public/stylesheets/*.scss'], ['minify', 'jsLint', 'sass']);
 });
