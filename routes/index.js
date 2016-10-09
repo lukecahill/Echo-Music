@@ -12,7 +12,9 @@ MongoClient.connect('mongodb://localhost:27017/shop_database', function(err, db)
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Lukes Node Site' });
+  res.render('index', { 
+    title: 'Book Store' 
+  });
 });
 
 router.get('/about', function(req, res) {
@@ -22,9 +24,20 @@ router.get('/about', function(req, res) {
 });
 
 router.get('/books', function(req, res) {
-  res.render('books', {
-    title: 'All books'
-  })
+  var collection = database.collection('books');
+  var items = collection.find().toArray(function(err, result) {
+    if(err) {
+      res.send(err);
+    } else if(result.length) {
+      console.log(result);
+      res.render('books', {
+        'bookList' : result,
+        title: 'Books'
+      });
+    } else {
+      res.send('No items found!');
+    }
+  });
 }); 
 
 router.get('/authors', function(req, res) {
@@ -43,9 +56,29 @@ router.get('/authors', function(req, res) {
   });
 });
 
+router.get('/newBook', function(req, res) {
+  res.render('newBook');
+})
+
 router.get('/newAuthor', function(req, res) {
   res.render('newAuthor', {
     title: 'New Author'
+  });
+});
+
+router.post('/addBook', function(req, res) {
+  console.log(req);
+  var collection = database.collection('books');
+  var book = {
+    'Title' : req.body.book_name
+  };
+
+  collection.insert(book, function(err, result) {
+    if(err) {
+      console.log(err);
+    } else {
+      res.redirect('books');
+    }
   });
 });
 
