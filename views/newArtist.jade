@@ -3,7 +3,7 @@ extends layout
 block content
     h3= title
 
-    form#add-author-form(method="post", action="/addAuthor")
+    form#add-author-form(method="post", action="/addArtist")
         div.form-group
             label(for="author_name") Name
             input#author-name.form-control(type="text", name="author_name", "placeholder"= "Randall Munroe")

@@ -1,0 +1,15 @@
+extends layout 
+
+block content
+    h2 Artists
+
+    form(action="/newArtist").pull-right
+        button.btn.btn-primary
+            span.glyphicon.glyphicon-plus 
+            |   Add a new Artist
+
+    h3 The artists that are currently in our catalog
+    table.table.table-striped.table-hover
+        each artist, i in artistList
+            tr
+                td #{artist.Author}

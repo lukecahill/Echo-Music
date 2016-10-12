@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    h2= title
+
+    form(action="/newAlbum").pull-right
+        button.btn.btn-primary
+            span.glyphicon.glyphicon-plus 
+            |   Add a new album
+
+    h3 The albums which are in our current catalog
+    table.table.table-striped.table-hover
+        th Artist 
+        th Album Title
+        each album, index in albumList
+            tr
+                td #{album.Author}
+                td #{album.Title}
