@@ -13,7 +13,7 @@ MongoClient.connect('mongodb://localhost:27017/shop_database', function(err, db)
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { 
-    title: 'Book Store' 
+    title: 'Echo Music' 
   });
 });
 
@@ -23,16 +23,16 @@ router.get('/about', function(req, res) {
   });
 });
 
-router.get('/books', function(req, res) {
+router.get('/albums', function(req, res) {
   var collection = database.collection('books');
   var items = collection.find().toArray(function(err, result) {
     if(err) {
       res.send(err);
     } else if(result.length) {
       console.log(result);
-      res.render('books', {
-        'bookList' : result,
-        title: 'Books'
+      res.render('albums', {
+        'albumList' : result,
+        title: 'Albums'
       });
     } else {
       res.send('No items found!');
@@ -40,15 +40,15 @@ router.get('/books', function(req, res) {
   });
 }); 
 
-router.get('/authors', function(req, res) {
+router.get('/artists', function(req, res) {
   var collection = database.collection('books');
   var items = collection.find().toArray(function(err, result) {
     if(err) {
       res.send(err);
     } else if(result.length) {
       console.log(result);
-      res.render('authorlist', {
-        'authorlist' : result
+      res.render('artistList', {
+        'artistList' : result
       });
     } else {
       res.send('No items found!');
@@ -56,44 +56,44 @@ router.get('/authors', function(req, res) {
   });
 });
 
-router.get('/newBook', function(req, res) {
-  res.render('newBook');
+router.get('/newAlbum', function(req, res) {
+  res.render('newAlbum');
 })
 
-router.get('/newAuthor', function(req, res) {
-  res.render('newAuthor', {
-    title: 'New Author'
+router.get('/newArtist', function(req, res) {
+  res.render('newArtist', {
+    title: 'New Artist'
   });
 });
 
-router.post('/addBook', function(req, res) {
+router.post('/addArtist', function(req, res) {
   console.log(req);
-  var collection = database.collection('books');
+  var collection = database.collection('artists');
   var book = {
-    'Title' : req.body.book_name
+    'Artist' : req.body.book_name
   };
 
   collection.insert(book, function(err, result) {
     if(err) {
       console.log(err);
     } else {
-      res.redirect('books');
+      res.redirect('albums');
     }
   });
 });
 
-router.post('/addAuthor', function(req, res) {
+router.post('/addAlbum', function(req, res) {
   console.log(req);
-  var collection = database.collection('books');
+  var collection = database.collection('artists');
   var author = {
-    'Author' : req.body.author_name,
-    'Title' : req.body.book_name
+    'Artist' : req.body.artist_name,
+    'Album' : req.body.book_name
   };
   collection.insert(author, function(err, result) {
     if(err) {
       console.log(err);
     } else {
-      res.redirect('authors');
+      res.redirect('artists');
     }
   });
 });
