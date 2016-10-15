@@ -1,8 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
+var server = require('http').createServer(express);
+var io = require('socket.io')(server);
+server.listen(8080, '127.0.0.1');
+
 var MongoClient = require('mongodb').MongoClient;
 var database;
+
 MongoClient.connect('mongodb://localhost:27017/shop_database', function(err, db) {
     if(!err) {
         console.log('Connected to MongoDb');
@@ -55,6 +60,18 @@ router.get('/artists', function(req, res) {
     }
     });
 });
+
+router.get('/chat', function(req, res) {
+    res.render('chat');
+});
+
+io.on('connection', function(socket) {
+    console.log('A user connected!');
+
+    socket.on('disconnect', function(socket) {
+        console.log('Disconnect!');
+    })
+})
 
 router.get('/newAlbum', function(req, res) {
     res.render('newAlbum');
