@@ -12,7 +12,11 @@ var socket = io.connect('http://localhost:8080');
 	* Sends the message using the socket connection.
 	**/
     function SendMessage() {
-        socket.emit('chat message', $message.val());
+        var item = {
+            Sender: $name.val(),
+            Message: $message.val()
+        };
+        socket.emit('chat message', item);
         $message.val('');
     }
 
@@ -67,8 +71,9 @@ var socket = io.connect('http://localhost:8080');
 	* Appends the new messages to the chatbox when they are recieved. 
 	**/
     socket.on('chat message', function(msg) {
-        var m = '<p><span class="sender" ' + $name.val() + '</span>: ' + msg + '<hr /></p>';
+        var m = '<p><span class="sender">' + msg.Sender + '</span>: ' + msg.Message + '<hr /></p>';
         $chatbox.append(m);
+        $chatbox.animate({ scrollTop: $chatbox.prop('scrollHeight')}, 750)
     });
 
 	/**
@@ -89,6 +94,19 @@ var socket = io.connect('http://localhost:8080');
         if(event.keyCode == 13) {
             SetName();
         }
+    });
+
+    socket.on('messages', function(data) {
+        $.each(data, function(index, item) {
+            var m = '<p><span class="sender">' + item.Sender + '</span>: ' + item.Message + '<hr /></p>';
+            $chatbox.append(m);
+            $chatbox.animate({ scrollTop: $chatbox.prop('scrollHeight')}, 750)
+        })
+    });
+
+    socket.on('connect', function(data) {
+        socket.emit('join');
+        $chatbox.empty();
     });
 
 })();
