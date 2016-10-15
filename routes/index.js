@@ -68,17 +68,28 @@ router.get('/chat', function(req, res) {
 io.on('connection', function(socket) {
     console.log('A user connected!');
 
+    var collection = database.collection('music_chat');
+    var messages;
+    var items = collection.find().toArray(function(err, result) {
+        if(err) {
+            console.log(err);
+        } else if(result.length) {
+            messages = result;
+        }
+    });
+
+    socket.on('join', function(data) {
+        socket.emit('messages', messages)
+    });
+
     socket.on('disconnect', function(socket) {
         console.log('Disconnect!');
     });
 
     socket.on('chat message', function(msg) {
-        console.log('Message: ' + msg);
-        io.emit('chat message', msg);
-        var collection = database.collection('music_chat');
         var message = {
-            'Sender' : msg,
-            'Message' : msg
+            'Sender' : msg.Sender,
+            'Message' : msg.Message
         };
 
         collection.insert(message, function(err, result) {
@@ -86,6 +97,8 @@ io.on('connection', function(socket) {
                 console.log(err);
             }
         });
+        
+        io.emit('chat message', msg);
     });
 });
 
