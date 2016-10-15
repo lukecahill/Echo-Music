@@ -100,6 +100,14 @@ io.on('connection', function(socket) {
         
         io.emit('chat message', msg);
     });
+
+    socket.on('typing', function(data) {
+        if(data.Typing) {
+            io.emit('userTyping', data.Name);
+        } else {
+            io.emit('noLongerTyping');
+        }
+    });
 });
 
 router.get('/newAlbum', function(req, res) {
