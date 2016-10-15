@@ -12,7 +12,7 @@ gulp.task('minify', function() {
 	.pipe(rename({
 		suffix: '.min'
 	}))
-    .pipe(gulp.dest('./public/javascrips/build/'))
+    .pipe(gulp.dest('./public/javascripts/build/'))
     .pipe(livereload());
 });
 
