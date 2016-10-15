@@ -17,6 +17,9 @@
   max-height: 300px;
   border-radius: 6px; }
 
+#chat hr {
+  margin: 0px; }
+
 #chat .top-buffer {
   margin-top: 2%; }
 
