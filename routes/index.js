@@ -70,8 +70,13 @@ io.on('connection', function(socket) {
 
     socket.on('disconnect', function(socket) {
         console.log('Disconnect!');
-    })
-})
+    });
+
+    socket.on('chat message', function(msg) {
+        console.log('Message: ' + msg);
+        io.emit('chat message', msg);
+    });
+});
 
 router.get('/newAlbum', function(req, res) {
     res.render('newAlbum');
