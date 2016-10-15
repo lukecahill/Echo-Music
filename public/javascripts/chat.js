@@ -3,6 +3,8 @@ var socket = io.connect('http://localhost:8080');
 (function() {
     var lastMessage = 0, $welcome = $('.welcome'), $chatbox = $('#chatbox'), $name = $('#name');
     var $message = $('#message');
+    var typing = false;
+    var timeout = undefined;
 
     $welcome.hide();
 
@@ -50,11 +52,34 @@ var socket = io.connect('http://localhost:8080');
         }
     }
 
+    function clearMessageTyping() {
+        typing = false;
+        var data = {
+            Typing: false,
+            Name: undefined
+        };
+        socket.emit('typing', data);
+    }
+
     $message.on('keyup', function(event) {
         if(event.keyCode == 13) {
             SendMessage();
         }
-    })
+
+        if(typing === false) {
+            typing = true;
+            var data = {
+                Typing: true,
+                Name: $name.val()
+            }
+
+            socket.emit('typing', data);
+            timeout = setTimeout(clearMessageTyping, 3000);
+        } else {
+            clearTimeout(timeout);
+            timeout = setTimeout(clearMessageTyping, 3000);
+        }
+    });
 
 	/**
 	* @function 
@@ -108,5 +133,13 @@ var socket = io.connect('http://localhost:8080');
         socket.emit('join');
         $chatbox.empty();
     });
+
+    socket.on('userTyping', function(data) {
+        $('.user-typing').text(data + ' is typing...');
+    });
+
+    socket.on('noLongerTyping', function(data) {
+        $('.user-typing').text('');
+    })
 
 })();
