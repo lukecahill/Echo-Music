@@ -2,9 +2,17 @@ extend layout
 
 block content
     div#chat
+        div.row
+            div.welcome.top-buffer
+            div.top-buffer#setYourName
+                label(for="name", autocomplete="off") Enter your chat name
+                    div.input-group
+                        input#name.form-control(name="name", type="text")
+                        span.input-group-btn
+                            button#setName.btn.btn-default(type="button") Set Name
         div#chatbox
         div.input-group
-            input#message(type="text").form-control(autocomplete="off")
+            input#message(type="text", autocomplete="off").form-control
             span.input-group-btn
                 button#sendMessage(type="button").btn.btn-default Send
 
