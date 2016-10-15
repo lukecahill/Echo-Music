@@ -48,16 +48,16 @@ router.get('/albums', function(req, res) {
 router.get('/artists', function(req, res) {
     var collection = database.collection('books');
     var items = collection.find().toArray(function(err, result) {
-    if(err) {
-        res.send(err);
-    } else if(result.length) {
-        console.log(result);
-        res.render('artistList', {
-            'artistList' : result
-        });
-    } else {
-        res.send('No items found!');
-    }
+        if(err) {
+            res.send(err);
+        } else if(result.length) {
+            console.log(result);
+            res.render('artistList', {
+                'artistList' : result
+            });
+        } else {
+            res.send('No items found!');
+        }
     });
 });
 
@@ -75,6 +75,17 @@ io.on('connection', function(socket) {
     socket.on('chat message', function(msg) {
         console.log('Message: ' + msg);
         io.emit('chat message', msg);
+        var collection = database.collection('music_chat');
+        var message = {
+            'Sender' : msg,
+            'Message' : msg
+        };
+
+        collection.insert(message, function(err, result) {
+            if(err) {
+                console.log(err);
+            }
+        });
     });
 });
 
