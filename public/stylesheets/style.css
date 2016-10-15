@@ -14,7 +14,11 @@
   width: 75%;
   padding: 3%;
   overflow-y: scroll;
-  max-height: 300px; }
+  max-height: 300px;
+  border-radius: 6px; }
+
+#chat .top-buffer {
+  margin-top: 2%; }
 
 #chat .sender {
   color: #ff0000; }
