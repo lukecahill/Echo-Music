@@ -12,12 +12,34 @@ var jwt = require('jsonwebtoken');
 var config = require('../config.js');
 var User = require('../models/user.js');
 
+router.use(function(req, res, next) {
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    if(token) {
+        jwt.verify(token, 'supersecret', function(err, decoded) {
+            if(err) {
+                return res.json({
+                    success: false,
+                    message: 'Failed to authenticate'
+                });
+            } else {
+                req.decoded = decoded;
+                next();
+            }
+        });
+    } else {
+        return res.status(403).send({
+                success: false,
+                message: 'No token provided'
+        });
+    }
+});
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     User.find({}, function(err, users) {
         res.json(users);
-    })
-     //res.send('respond with a resource');
+    });
 });
 
 module.exports = router;
