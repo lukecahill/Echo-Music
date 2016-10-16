@@ -14,6 +14,14 @@ var MongoClient = require('mongodb');
 var server = require('http').createServer(express);
 var io = require('socket.io')(server);
 
+var mongoose = require('mongoose');
+var jwt = require('jsonwebtoken');
+var config = require('./config.js');
+var User = require('./models/user.js');
+
+mongoose.connect(config.database);
+app.set('supersecret', app.secret);
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
