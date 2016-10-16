@@ -20,7 +20,7 @@ var config = require('./config.js');
 var User = require('./models/user.js');
 
 mongoose.connect(config.database);
-app.set('supersecret', app.secret);
+app.set('supersecret', config.secret);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
