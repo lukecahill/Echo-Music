@@ -1,6 +1,8 @@
 #footer {
   margin-top: 2%;
-  border-top: 1px solid #ddd; }
+  border-top: 1px solid #ddd;
+  position: fixed;
+  bottom: 0; }
   #footer div {
     margin-top: 1%; }
 
@@ -15,7 +17,8 @@
   padding: 3%;
   overflow-y: scroll;
   max-height: 300px;
-  border-radius: 6px; }
+  border-radius: 6px;
+  padding-bottom: 4px; }
 
 #chat hr {
   margin: 0px; }

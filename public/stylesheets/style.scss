@@ -1,6 +1,8 @@
 #footer {
     margin-top: 2%;
     border-top: 1px solid #ddd;
+    position: fixed;
+    bottom: 0;
 
     div {
       margin-top: 1%;
@@ -21,6 +23,7 @@
         overflow-y: scroll;
         max-height: 300px;
         border-radius: 6px;
+        padding-bottom: 4px;
     }
 
     hr {
