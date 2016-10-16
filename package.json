@@ -11,8 +11,12 @@
     "debug": "~2.2.0",
     "express": "~4.13.4",
     "jade": "~1.11.0",
+<<<<<<< HEAD
     "jsonwebtoken": "^7.1.9",
     "mongoose": "^4.6.3",
+=======
+    "mongodb": "^2.2.10",
+>>>>>>> b01a79657008bfbf61951b01d53858fe0e528cdc
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.0",
     "socket.io": "^1.5.0",
