@@ -22,7 +22,7 @@ MongoClient.connect('mongodb://localhost:27017/shop_database', function(err, db)
 
 router.post('/authenticate', function(req, res) {
     User.findOne({
-        name: req.body.name
+        name: req.body.username
     }, function(err, user) {
         if(err) throw err;
 
