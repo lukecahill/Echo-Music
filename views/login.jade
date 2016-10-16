@@ -1,0 +1,11 @@
+extends layout
+
+block content
+    div.form-group
+        form(action="/authenticate", method="POST")
+            label(for="username") Name
+            input.form-control#username(name="username", type="text")
+            
+            label(for="password") Password
+            input.form-control#password(name="password", type="password")
+            button.btn.btn-primary Login
