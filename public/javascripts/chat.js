@@ -123,15 +123,15 @@ var socket = io.connect('http://localhost:8080');
 
     socket.on('messages', function(data) {
         $.each(data, function(index, item) {
-            var m = '<p><span class="sender">' + item.Sender + '</span>: ' + item.Message + '<hr /></p>';
+            var m = '<p class="message"><span class="sender">' + item.Sender + '</span>: ' + item.Message + '</p><hr>';
             $chatbox.append(m);
             $chatbox.animate({ scrollTop: $chatbox.prop('scrollHeight')}, 750)
         })
     });
 
     socket.on('connect', function(data) {
-        socket.emit('join');
         $chatbox.empty();
+        socket.emit('join');
     });
 
     socket.on('userTyping', function(data) {
