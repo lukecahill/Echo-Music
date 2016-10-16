@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var app = express();
 
 var server = require('http').createServer(express);
 var io = require('socket.io')(server);
@@ -8,11 +9,45 @@ server.listen(8080, '127.0.0.1');
 var MongoClient = require('mongodb').MongoClient;
 var database;
 
+var jwt = require('jsonwebtoken');
+var config = require('../config.js');
+var User = require('../models/user.js');
+
 MongoClient.connect('mongodb://localhost:27017/shop_database', function(err, db) {
     if(!err) {
         console.log('Connected to MongoDb');
         database = db;
     }
+});
+
+router.post('/authenticate', function(req, res) {
+    User.findOne({
+        name: req.body.name
+    }, function(err, user) {
+        if(err) throw err;
+
+        if(!user) {
+            res.json({
+                success: false, 
+                message: 'Authentication failed.'
+            });
+        } else if(user.password != req.body.password) {
+            res.json({
+                success: false,
+                message: 'Authentication failed'
+            });
+        } else {
+            var token = jwt.sign(user, 'supersecret', {
+                expiresIn: 9999
+            });
+
+            res.json({
+                success: true,
+                message: 'Token gained',
+                token: token
+            });
+        }
+    })
 });
 
 /* GET home page. */
@@ -150,6 +185,29 @@ router.post('/addAlbum', function(req, res) {
             res.redirect('artists');
         }
     });
+});
+
+router.use(function(req, res, next) {
+    var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    if(token) {
+        jwt.verify(token, 'supersecret', function(err, decoded) {
+            if(err) {
+                return res.json({
+                    success: false,
+                    message: 'Failed to authenticate'
+                });
+            } else {
+                req.decoded = decoded;
+                next();
+            }
+        });
+    } else {
+        return res.status(403).send({
+                success: false,
+                message: 'No token provided'
+        });
+    }
 });
 
 module.exports = router;
