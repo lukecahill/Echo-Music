@@ -43,7 +43,7 @@ router.post('/authenticate', function(req, res) {
                 token: token
             });
         }
-    })
+    });
 });
 
 /* GET home page. */
