@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
+var chat = require('./routes/chat');
 
 var app = express();
 var MongoClient = require('mongodb');
@@ -38,6 +39,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login', login);
 app.use('/', routes);
+app.use('/chat', chat);
 app.use('/users', users);
 
 app.use('/javascripts', express.static('./javascripts'));
