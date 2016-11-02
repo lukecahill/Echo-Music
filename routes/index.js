@@ -8,12 +8,51 @@ var database;
 var jwt = require('jsonwebtoken');
 var config = require('../config.js');
 var User = require('../models/user.js');
+var passwordHash = require('password-hash');
 
 MongoClient.connect('mongodb://localhost:27017/shop_database', function(err, db) {
     if(!err) {
         console.log('Connected to MongoDb');
         database = db;
     }
+});
+
+router.post('/newRegistration', function(req, res) {
+    User.findOne({
+        name: req.body.username
+    }, function(err, user) {
+        if(err) console.log(err);
+
+        if(user) {
+            return res.json({
+                success: false, 
+                message: 'User already exists.'
+            });
+        } else {
+            var password = req.body.password;
+            var confirmPassword = req.body.confirm_password;
+
+            if(password !== confirmPassword) {
+                return res.json({
+                    success: false,
+                    message: 'passwords dont match'
+                });
+            }
+
+            var hashed = passwordHash.generate(req.body.password);
+            var newUser = new User({
+                name: req.body.username,
+                password: hashed,
+                admin: 0
+            });
+            newUser.save(function(error, newUser) {
+                if(error) return res.json({ message: 'could not save' });
+            });
+            res.json({
+                message: 'good'
+            });
+        }
+    });
 });
 
 router.post('/authenticate', function(req, res) {
@@ -136,7 +175,6 @@ router.post('/addAlbum', function(req, res) {
 
 router.use(function(req, res, next) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
-
     if(token) {
         jwt.verify(token, 'supersecret', function(err, decoded) {
             if(err) {
