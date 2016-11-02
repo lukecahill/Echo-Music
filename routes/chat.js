@@ -13,13 +13,6 @@ var jwt = require('jsonwebtoken');
 var config = require('../config.js');
 var User = require('../models/user.js');
 
-MongoClient.connect('mongodb://localhost:27017/shop_database', function(err, db) {
-    if(!err) {
-        console.log('Connected to MongoDb');
-        database = db;
-    }
-});
-
 router.get('/chat', function(req, res) {
     res.render('chat');
 });
