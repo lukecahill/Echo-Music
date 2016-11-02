@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
+var register = require('./routes/register');
 var chat = require('./routes/chat');
 
 var app = express();
@@ -38,6 +39,7 @@ app.use(require('stylus').middleware(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/login', login);
+app.use('/register', register);
 app.use('/', routes);
 app.use('/chat', chat);
 app.use('/users', users);
