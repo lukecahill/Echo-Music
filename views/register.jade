@@ -1,6 +1,7 @@
 extends layout
 
 block content
+    h1 Register 
     form(action="/newRegistration", method="POST")
         div.form-group
             label(for="username") Name
@@ -10,5 +11,5 @@ block content
             input.form-control#password(name="password", type="password")
 
             label(for="password") Confirm Password
-            input.form-control#confirm_password(name="confirm_password", type="confirm_password")
-        button.btn.btn-primary Login
+            input.form-control#confirm_password(name="confirm_password", type="password")
+        button.btn.btn-primary Register
