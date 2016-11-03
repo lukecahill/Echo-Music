@@ -8,7 +8,7 @@ var database;
 var jwt = require('jsonwebtoken');
 var config = require('../config.js');
 var User = require('../models/user.js');
-var passwordHash = require('password-hash');
+var passwordHash = require('bcrypt-nodejs');
 
 MongoClient.connect('mongodb://localhost:27017/shop_database', function(err, db) {
     if(!err) {
@@ -39,7 +39,7 @@ router.post('/newRegistration', function(req, res) {
                 });
             }
 
-            var hashed = passwordHash.generate(req.body.password);
+            var hashed = passwordHash.hashSync(req.body.password);
             var newUser = new User({
                 name: req.body.username,
                 password: hashed,
@@ -67,7 +67,7 @@ router.post('/authenticate', function(req, res) {
                 message: 'Authentication failed.'
             });
         } else {
-            if(passwordHash.verify(req.body.password, user.password)) {
+            if(passwordHash.compareSync(req.body.password, user.password)) {
                 var token = jwt.sign(user, 'supersecret', {
                     expiresIn: 9999
                 });
