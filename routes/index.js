@@ -66,21 +66,22 @@ router.post('/authenticate', function(req, res) {
                 success: false, 
                 message: 'Authentication failed.'
             });
-        } else if(user.password != req.body.password) {
-            res.json({
-                success: false,
-                message: 'Authentication failed'
-            });
         } else {
-            var token = jwt.sign(user, 'supersecret', {
-                expiresIn: 9999
-            });
+            if(passwordHash.verify(req.body.password, user.password)) {
+                var token = jwt.sign(user, 'supersecret', {
+                    expiresIn: 9999
+                });
 
-            res.json({
-                success: true,
-                message: 'Token gained',
-                token: token
-            });
+                res.json({
+                    success: true,
+                    message: 'Token gained',
+                    token: token
+                });
+            } else {
+                res.json({
+                    message: 'failed login'
+                });
+            }
         }
     });
 });
