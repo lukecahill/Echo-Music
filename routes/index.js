@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var app = express();
+var cookie = require('cookies');
+var cookieParser = require('cookie-parser');
 
 var MongoClient = require('mongodb').MongoClient;
 var database;
@@ -46,11 +48,9 @@ router.post('/newRegistration', function(req, res) {
                 admin: 0
             });
             newUser.save(function(error, newUser) {
-                if(error) return res.json({ message: 'could not save' });
+                if(error) return res.render('error', { message: 'could not save' });
             });
-            res.json({
-                message: 'good'
-            });
+            res.redirect('login');
         }
     });
 });
@@ -72,11 +72,9 @@ router.post('/authenticate', function(req, res) {
                     expiresIn: 9999
                 });
 
-                res.json({
-                    success: true,
-                    message: 'Token gained',
-                    token: token
-                });
+                cookie.set(token, token);
+
+                res.redirect('index');
             } else {
                 res.json({
                     message: 'failed login'
