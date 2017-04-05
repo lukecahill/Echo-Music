@@ -13,7 +13,13 @@ var jwt = require('jsonwebtoken');
 var config = require('../config.js');
 var User = require('../models/user.js');
 
-router.get('/chat', function(req, res) {
+MongoClient.connect('mongodb://localhost:27017/shop', function(err, db) {
+    if(!err) {
+        database = db;
+    }
+});
+
+router.get('/', function(req, res) {
     res.render('chat');
 });
 
@@ -40,8 +46,8 @@ io.on('connection', function(socket) {
 
     socket.on('chat message', function(msg) {
         var message = {
-            'Sender' : msg.Sender,
-            'Message' : msg.Message
+            'name' : msg.Sender,
+            'message' : msg.Message
         };
 
         collection.insert(message, function(err, result) {
@@ -62,7 +68,7 @@ io.on('connection', function(socket) {
     });
 });
 
-router.use(function(req, res, next) {
+/*router.use(function(req, res, next) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
     if(token) {
@@ -83,6 +89,6 @@ router.use(function(req, res, next) {
             message: 'No token provided'
         });
     }
-});
+});*/
 
 module.exports = router;

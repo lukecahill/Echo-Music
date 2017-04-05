@@ -4,7 +4,7 @@ var socket = io.connect('http://localhost:8080');
     var lastMessage = 0, $welcome = $('.welcome'), $chatbox = $('#chatbox'), $name = $('#name');
     var $message = $('#message');
     var typing = false;
-    var timeout = undefined;
+    var timeout;
 
     $welcome.hide();
 
@@ -123,10 +123,10 @@ var socket = io.connect('http://localhost:8080');
 
     socket.on('messages', function(data) {
         $.each(data, function(index, item) {
-            var m = '<p class="message"><span class="sender">' + item.Sender + '</span>: ' + item.Message + '</p><hr>';
+            var m = '<p class="message"><span class="sender">' + item.name + '</span>: ' + item.message + '</p><hr>';
             $chatbox.append(m);
             $chatbox.animate({ scrollTop: $chatbox.prop('scrollHeight')}, 750)
-        })
+        });
     });
 
     socket.on('connect', function(data) {
@@ -140,6 +140,6 @@ var socket = io.connect('http://localhost:8080');
 
     socket.on('noLongerTyping', function(data) {
         $('.user-typing').text('');
-    })
+    });
 
 })();
