@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var app = express();
-var cookie = require('cookies');
-var cookieParser = require('cookie-parser');
+//var cookie = require('cookies');
+//var cookieParser = require('cookie-parser');
 
 var MongoClient = require('mongodb').MongoClient;
 var database;
@@ -12,7 +12,7 @@ var config = require('../config.js');
 var User = require('../models/user.js');
 var passwordHash = require('bcrypt-nodejs');
 
-MongoClient.connect('mongodb://localhost:27017/shop_database', function(err, db) {
+MongoClient.connect('mongodb://localhost:27017/shop', function(err, db) {
     if(!err) {
         console.log('Connected to MongoDb');
         database = db;
@@ -72,7 +72,7 @@ router.post('/authenticate', function(req, res) {
                     expiresIn: 9999
                 });
 
-                cookie.set(token, token);
+                //cookie.set(token, token);
 
                 res.redirect('index');
             } else {
@@ -98,7 +98,7 @@ router.get('/about', function(req, res) {
 });
 
 router.get('/albums', function(req, res) {
-    var collection = database.collection('books');
+    var collection = database.collection('albums');
     var items = collection.find().toArray(function(err, result) {
         if(err) {
             res.send(err);
@@ -115,7 +115,7 @@ router.get('/albums', function(req, res) {
 }); 
 
 router.get('/artists', function(req, res) {
-    var collection = database.collection('books');
+    var collection = database.collection('artists');
     var items = collection.find().toArray(function(err, result) {
         if(err) {
             res.send(err);
@@ -143,11 +143,11 @@ router.get('/newArtist', function(req, res) {
 router.post('/addArtist', function(req, res) {
     console.log(req);
     var collection = database.collection('artists');
-    var book = {
-        'Artist' : req.body.book_name
+    var item = {
+        'artist' : req.body.book_name
     };
 
-    collection.insert(book, function(err, result) {
+    collection.insert(item, function(err, result) {
         if(err) {
             console.log(err);
         } else {
@@ -159,11 +159,11 @@ router.post('/addArtist', function(req, res) {
 router.post('/addAlbum', function(req, res) {
     console.log(req);
     var collection = database.collection('artists');
-    var author = {
-        'Artist' : req.body.artist_name,
-        'Album' : req.body.book_name
+    var item = {
+        'artist' : req.body.artist_name,
+        'title' : req.body.book_name
     };
-    collection.insert(author, function(err, result) {
+    collection.insert(item, function(err, result) {
         if(err) {
             console.log(err);
         } else {
@@ -172,7 +172,7 @@ router.post('/addAlbum', function(req, res) {
     });
 });
 
-router.use(function(req, res, next) {
+/*router.use(function(req, res, next) {
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
     if(token) {
         jwt.verify(token, 'supersecret', function(err, decoded) {
@@ -193,5 +193,5 @@ router.use(function(req, res, next) {
         });
     }
 });
-
+*/
 module.exports = router;
